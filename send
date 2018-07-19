@@ -1,0 +1,45 @@
+AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(API.URL+"/data/list?fow="+idLy+"&to="+asd+"&detasd="+lasjd+"");
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    if(con.getResponseCode()==200){
+                        InputStream stream = con.getInputStream();
+                        InputStreamReader reader = new InputStreamReader(stream, "UTF-8");
+                        JsonReader jsonReader = new JsonReader(reader);
+                        jsonReader.beginArray();
+                        while (jsonReader.hasNext()){
+                            Schedule schedule = new Schedule();
+                            jsonReader.beginObject();
+                            while (jsonReader.hasNext()){
+                                String key = jsonReader.nextName();
+                                switch (key){
+                                    case "flightNumber":
+                                        schedule.setFlightNumber(jsonReader.nextString());
+                                        break;
+                                    case "price":
+                                        schedule.setPrice(jsonReader.nextString());
+                                        break;
+                                    case "time":
+                                        schedule.setTime(jsonReader.nextString());
+                                        break;
+                                    case "aircraft":
+                                        schedule.setAircraft(jsonReader.nextString());
+                                        break;
+                                }
+                            }
+                            schedules.add(schedule);
+                            jsonReader.endObject();
+                        }
+                        jsonReader.endArray();
+                        jsonReader.close();
+                        con.disconnect();
+                    }
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
