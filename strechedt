@@ -1,0 +1,15 @@
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, asd){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text1 = view.findViewById(android.R.id.text1);
+                TextView text2 = view.findViewById(android.R.id.text2);
+
+                text1.setText("asd: "+asd.get(position).getData());
+                text2.setText("asd: "+asd.get(position).getData2()+ "$");
+                return view;
+            }
+        };
+        listAmenities.setAdapter(adapter);
+        
+      
